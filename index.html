@@ -1,786 +1,272 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>قلم — فضای نویسندگی</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --ink:     #1a1208;
-      --paper:   #f7f3ec;
-      --gold:    #b5892a;
-      --mist:    #d6cfc3;
-      --shadow:  #3d2f1a;
-      --accent:  #6b3f1e;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>قلم — وبلاگ نویسندگی</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@200;300;400;500;700;900&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0d0d0d;
+  --surface:#141414;
+  --surface2:#1c1c1c;
+  --border:#2a2a2a;
+  --gold:#c9a84c;
+  --gold2:#e8c97a;
+  --text:#e8e0d5;
+  --muted:#6b6560;
+  --accent:#8b4513;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Vazirmatn',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.7}
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+/* NAV */
+nav{position:fixed;top:0;right:0;left:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 2.5rem;background:rgba(13,13,13,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.logo{font-size:1.6rem;font-weight:900;color:var(--gold);text-decoration:none;letter-spacing:-.02em}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{text-decoration:none;color:var(--muted);font-size:.9rem;transition:color .2s;font-weight:400}
+.nav-links a:hover{color:var(--gold)}
 
-    body {
-      font-family: 'Vazirmatn', sans-serif;
-      background: var(--paper);
-      color: var(--ink);
-      min-height: 100vh;
-    }
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% 50%,rgba(201,168,76,.06) 0%,transparent 70%)}
+.hero-eyebrow{font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;font-weight:400}
+.hero-title{font-size:clamp(4rem,14vw,11rem);font-weight:900;line-height:.9;color:var(--text);letter-spacing:-.04em}
+.hero-title em{color:var(--gold);font-style:normal}
+.hero-desc{margin-top:2rem;font-size:1.05rem;color:var(--muted);max-width:420px;font-weight:300;line-height:1.9}
+.hero-cta{margin-top:3rem;display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+.btn{padding:.85rem 2rem;border-radius:2px;font-family:inherit;font-size:.95rem;font-weight:500;cursor:pointer;text-decoration:none;display:inline-block;transition:all .2s;border:none}
+.btn-gold{background:var(--gold);color:#0d0d0d}
+.btn-gold:hover{background:var(--gold2)}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.scroll-line{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--muted);font-size:.7rem;letter-spacing:.15em}
+.scroll-line::after{content:'';width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);animation:grow 2s ease-in-out infinite}
+@keyframes grow{0%,100%{opacity:.3}50%{opacity:1}}
 
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem;
-      position: relative;
-      overflow: hidden;
-    }
+/* SECTIONS */
+.section{padding:7rem 2rem;max-width:1100px;margin:0 auto}
+.section-header{margin-bottom:4rem}
+.eyebrow{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem;font-weight:500}
+.section-title{font-size:clamp(1.8rem,4vw,3rem);font-weight:700;color:var(--text);line-height:1.1}
 
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 70% 50% at 50% 40%, rgba(181,137,42,.08) 0%, transparent 70%);
-      pointer-events: none;
-    }
+/* FILTER TABS */
+.filter-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:3rem}
+.ftab{padding:.7rem 1.4rem;background:none;border:none;font-family:inherit;font-size:.88rem;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;font-weight:400}
+.ftab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.ftab:hover{color:var(--text)}
 
-    .hero-title {
-      font-size: clamp(3.5rem, 12vw, 9rem);
-      font-weight: 700;
-      letter-spacing: -.02em;
-      line-height: 1;
-      color: var(--ink);
-      position: relative;
-    }
+/* POSTS */
+.posts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem}
+.post-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;overflow:hidden;cursor:pointer;transition:all .25s;text-decoration:none;color:inherit;display:block}
+.post-card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.post-img{width:100%;height:200px;object-fit:cover;display:block;background:var(--surface2)}
+.post-img-placeholder{width:100%;height:200px;background:linear-gradient(135deg,var(--surface2),#1a1a1a);display:flex;align-items:center;justify-content:center;font-size:3rem;color:var(--border)}
+.post-body-card{padding:1.5rem}
+.post-tag{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:.7rem}
+.post-title-card{font-size:1.15rem;font-weight:700;line-height:1.4;margin-bottom:.7rem;color:var(--text)}
+.post-excerpt{font-size:.88rem;color:var(--muted);line-height:1.75;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.post-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:.75rem;color:var(--muted)}
 
-    .hero-title span {
-      color: var(--gold);
-    }
+/* BOOKS */
+.books-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1.5rem}
+.book-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;overflow:hidden;transition:all .25s}
+.book-card:hover{border-color:var(--gold);transform:translateY(-4px)}
+.book-cover{height:220px;display:flex;align-items:center;justify-content:center;font-size:4rem;background:linear-gradient(135deg,#1a1208,#2d1f0a)}
+.book-info{padding:1rem}
+.book-name{font-size:.9rem;font-weight:700;margin-bottom:.3rem;color:var(--text)}
+.book-by{font-size:.75rem;color:var(--muted)}
+.book-dl{display:block;margin:.8rem .5rem .5rem;padding:.5rem;background:var(--gold);color:#0d0d0d;border-radius:2px;text-align:center;text-decoration:none;font-size:.8rem;font-weight:600;transition:background .2s}
+.book-dl:hover{background:var(--gold2)}
 
-    .hero-sub {
-      margin-top: 1.5rem;
-      font-size: clamp(1rem, 2.5vw, 1.3rem);
-      font-weight: 300;
-      color: var(--accent);
-      max-width: 500px;
-      line-height: 1.8;
-    }
+/* DIVIDER */
+.divider{border:none;border-top:1px solid var(--border);margin:0}
 
-    .hero-actions {
-      margin-top: 3rem;
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+/* FOOTER */
+footer{text-align:center;padding:3rem 2rem;border-top:1px solid var(--border);color:var(--muted);font-size:.82rem}
+footer a{color:var(--gold);text-decoration:none}
 
-    .btn {
-      padding: .9rem 2.2rem;
-      border-radius: 3px;
-      font-family: inherit;
-      font-size: 1rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all .2s;
-      text-decoration: none;
-      display: inline-block;
-    }
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:flex-start;justify-content:center;padding:4rem 1rem;overflow-y:auto}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:3rem;max-width:680px;width:100%;position:relative}
+.modal-close{position:absolute;top:1.2rem;left:1.2rem;background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;line-height:1;transition:color .2s}
+.modal-close:hover{color:var(--gold)}
+.modal-tag{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.modal-title{font-size:1.8rem;font-weight:700;margin-bottom:.5rem;color:var(--text)}
+.modal-date{font-size:.8rem;color:var(--muted);margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}
+.modal-img{width:100%;max-height:360px;object-fit:cover;border-radius:2px;margin-bottom:2rem}
+.modal-text{font-size:1rem;line-height:2;color:#c8bfb4;white-space:pre-wrap}
 
-    .btn-primary {
-      background: var(--ink);
-      color: var(--paper);
-      border: 2px solid var(--ink);
-    }
-    .btn-primary:hover { background: var(--shadow); border-color: var(--shadow); }
+/* TOAST */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--surface);border:1px solid var(--gold);color:var(--gold);padding:.85rem 2rem;border-radius:2px;font-size:.88rem;z-index:500;transition:transform .3s ease;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
 
-    .btn-outline {
-      background: transparent;
-      color: var(--ink);
-      border: 2px solid var(--mist);
-    }
-    .btn-outline:hover { border-color: var(--ink); }
-
-    .scroll-hint {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: .8rem;
-      color: var(--mist);
-      letter-spacing: .1em;
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:1} }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; right: 0; left: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.2rem 2.5rem;
-      backdrop-filter: blur(12px);
-      background: rgba(247,243,236,.85);
-      border-bottom: 1px solid var(--mist);
-    }
-
-    .nav-logo {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--ink);
-      text-decoration: none;
-    }
-    .nav-logo span { color: var(--gold); }
-
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
-    .nav-links a {
-      text-decoration: none;
-      color: var(--ink);
-      font-size: .95rem;
-      font-weight: 400;
-      transition: color .2s;
-    }
-    .nav-links a:hover { color: var(--gold); }
-
-    /* ── SECTIONS ── */
-    section {
-      padding: 6rem 2rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .section-label {
-      font-size: .75rem;
-      font-weight: 500;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1rem;
-    }
-
-    .section-title {
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
-      font-weight: 700;
-      line-height: 1.2;
-      margin-bottom: 3rem;
-      color: var(--ink);
-    }
-
-    /* ── POSTS GRID ── */
-    .posts-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 2rem;
-    }
-
-    .post-card {
-      border: 1px solid var(--mist);
-      padding: 2rem;
-      border-radius: 4px;
-      transition: all .25s;
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
-      display: block;
-      background: white;
-    }
-    .post-card:hover {
-      border-color: var(--gold);
-      box-shadow: 0 8px 32px rgba(26,18,8,.08);
-      transform: translateY(-3px);
-    }
-
-    .post-type {
-      font-size: .72rem;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--gold);
-      font-weight: 500;
-      margin-bottom: .8rem;
-    }
-
-    .post-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      line-height: 1.4;
-      margin-bottom: .8rem;
-    }
-
-    .post-excerpt {
-      font-size: .9rem;
-      line-height: 1.7;
-      color: var(--accent);
-    }
-
-    .post-meta {
-      margin-top: 1.5rem;
-      font-size: .8rem;
-      color: var(--mist);
-      display: flex;
-      justify-content: space-between;
-    }
-
-    /* ── UPLOAD SECTION ── */
-    .upload-box {
-      border: 2px dashed var(--mist);
-      border-radius: 6px;
-      padding: 3rem;
-      text-align: center;
-      transition: border-color .2s;
-      cursor: pointer;
-      background: white;
-    }
-    .upload-box:hover { border-color: var(--gold); }
-    .upload-icon { font-size: 3rem; margin-bottom: 1rem; }
-    .upload-text { color: var(--accent); line-height: 1.8; }
-
-    /* ── EDITOR ── */
-    #editor-section {
-      background: white;
-      border: 1px solid var(--mist);
-      border-radius: 6px;
-      padding: 2.5rem;
-      margin-top: 2rem;
-    }
-
-    .form-group { margin-bottom: 1.5rem; }
-    .form-group label {
-      display: block;
-      font-size: .85rem;
-      font-weight: 500;
-      margin-bottom: .5rem;
-      color: var(--shadow);
-    }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: .9rem 1.1rem;
-      border: 1.5px solid var(--mist);
-      border-radius: 4px;
-      font-family: inherit;
-      font-size: 1rem;
-      color: var(--ink);
-      background: var(--paper);
-      transition: border-color .2s;
-      direction: rtl;
-    }
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: var(--gold);
-    }
-
-    .form-group textarea { min-height: 250px; resize: vertical; line-height: 1.8; }
-
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    @media(max-width:600px){ .form-row { grid-template-columns: 1fr; } }
-
-    /* ── BOOKS ── */
-    .books-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .book-card {
-      background: white;
-      border: 1px solid var(--mist);
-      border-radius: 4px;
-      overflow: hidden;
-      text-align: center;
-      transition: all .25s;
-    }
-    .book-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(26,18,8,.1); }
-
-    .book-cover {
-      height: 220px;
-      background: linear-gradient(135deg, var(--shadow), var(--gold));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3rem;
-    }
-
-    .book-info { padding: 1rem; }
-    .book-title { font-size: .95rem; font-weight: 700; margin-bottom: .4rem; }
-    .book-author { font-size: .8rem; color: var(--accent); }
-    .book-download {
-      display: block;
-      margin: .8rem .5rem .5rem;
-      padding: .5rem;
-      background: var(--ink);
-      color: white;
-      border-radius: 3px;
-      text-decoration: none;
-      font-size: .8rem;
-      transition: background .2s;
-    }
-    .book-download:hover { background: var(--gold); }
-
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--mist);
-      text-align: center;
-      padding: 3rem 2rem;
-      color: var(--mist);
-      font-size: .85rem;
-    }
-    footer a { color: var(--gold); text-decoration: none; }
-
-    /* ── MODAL ── */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(26,18,8,.7);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-    }
-    .modal-overlay.open { display: flex; }
-
-    .modal {
-      background: var(--paper);
-      border-radius: 6px;
-      padding: 2.5rem;
-      max-width: 600px;
-      width: 100%;
-      max-height: 80vh;
-      overflow-y: auto;
-      position: relative;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 1rem;
-      left: 1rem;
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--accent);
-    }
-
-    .modal h2 { margin-bottom: 1rem; font-size: 1.5rem; }
-    .modal p { line-height: 1.9; color: var(--shadow); font-size: 1rem; }
-
-    /* ── TOAST ── */
-    .toast {
-      position: fixed;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: var(--ink);
-      color: white;
-      padding: .9rem 2rem;
-      border-radius: 4px;
-      font-size: .9rem;
-      z-index: 300;
-      transition: transform .3s ease;
-    }
-    .toast.show { transform: translateX(-50%) translateY(0); }
-
-    /* ── TABS ── */
-    .tabs {
-      display: flex;
-      gap: 0;
-      border-bottom: 2px solid var(--mist);
-      margin-bottom: 2rem;
-    }
-
-    .tab {
-      padding: .8rem 1.5rem;
-      cursor: pointer;
-      font-size: .95rem;
-      font-weight: 500;
-      color: var(--accent);
-      border-bottom: 2px solid transparent;
-      margin-bottom: -2px;
-      transition: all .2s;
-      background: none;
-      border-top: none;
-      border-right: none;
-      border-left: none;
-      font-family: inherit;
-    }
-    .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
-    .tab:hover { color: var(--ink); }
-
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-
-    #publish-btn {
-      width: 100%;
-      padding: 1rem;
-      font-size: 1.1rem;
-      margin-top: .5rem;
-    }
-  </style>
+/* EMPTY */
+.empty{grid-column:1/-1;text-align:center;padding:4rem;color:var(--muted);font-size:.9rem}
+</style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#"><span>ق</span>لم</a>
+  <a class="logo" href="#">قلم</a>
   <ul class="nav-links">
     <li><a href="#posts">نوشته‌ها</a></li>
     <li><a href="#books">کتاب‌ها</a></li>
-    <li><a href="#publish">انتشار</a></li>
+    <li><a href="#about">درباره</a></li>
   </ul>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <h1 class="hero-title">قلم<span>.</span></h1>
-  <p class="hero-sub">فضای نویسندگی شما — داستان، شعر، مقاله و کتاب را اینجا منتشر کنید</p>
-  <div class="hero-actions">
-    <a href="#publish" class="btn btn-primary">شروع نوشتن</a>
-    <a href="#posts" class="btn btn-outline">خواندن نوشته‌ها</a>
+  <div class="hero-eyebrow">وبلاگ نویسندگی شخصی</div>
+  <h1 class="hero-title">قلم<em>.</em></h1>
+  <p class="hero-desc">داستان، شعر، مقاله و کتاب — هر آنچه از ذهن به کاغذ می‌رسد</p>
+  <div class="hero-cta">
+    <a href="#posts" class="btn btn-gold">خواندن نوشته‌ها</a>
+    <a href="#books" class="btn btn-ghost">کتاب‌خانه</a>
   </div>
-  <div class="scroll-hint">↓ اسکرول کن</div>
+  <div class="scroll-line">پایین</div>
 </div>
 
+<hr class="divider"/>
+
 <!-- POSTS -->
-<section id="posts">
-  <div class="section-label">آخرین نوشته‌ها</div>
-  <h2 class="section-title">نوشته‌های منتشرشده</h2>
-
-  <div class="tabs">
-    <button class="tab active" onclick="filterPosts('all')">همه</button>
-    <button class="tab" onclick="filterPosts('داستان')">داستان</button>
-    <button class="tab" onclick="filterPosts('شعر')">شعر</button>
-    <button class="tab" onclick="filterPosts('مقاله')">مقاله</button>
+<section class="section" id="posts">
+  <div class="section-header">
+    <div class="eyebrow">نوشته‌های اخیر</div>
+    <h2 class="section-title">آنچه نوشته‌ام</h2>
   </div>
-
-  <div class="posts-grid" id="posts-grid">
-    <!-- از localStorage لود می‌شه -->
+  <div class="filter-tabs">
+    <button class="ftab active" onclick="filterPosts('all',this)">همه</button>
+    <button class="ftab" onclick="filterPosts('داستان',this)">داستان</button>
+    <button class="ftab" onclick="filterPosts('شعر',this)">شعر</button>
+    <button class="ftab" onclick="filterPosts('مقاله',this)">مقاله</button>
+    <button class="ftab" onclick="filterPosts('رمان',this)">رمان</button>
   </div>
+  <div class="posts-grid" id="posts-grid"></div>
 </section>
 
+<hr class="divider"/>
+
 <!-- BOOKS -->
-<section id="books">
-  <div class="section-label">کتابخانه</div>
-  <h2 class="section-title">کتاب‌ها و فایل‌ها</h2>
+<section class="section" id="books">
+  <div class="section-header">
+    <div class="eyebrow">کتاب‌خانه</div>
+    <h2 class="section-title">کتاب‌ها و فایل‌ها</h2>
+  </div>
   <div class="books-grid" id="books-grid"></div>
 </section>
 
-<!-- PUBLISH -->
-<section id="publish">
-  <div class="section-label">انتشار</div>
-  <h2 class="section-title">انتشار محتوا</h2>
+<hr class="divider"/>
 
-  <div class="tabs">
-    <button class="tab active" onclick="switchPublishTab('text')">متن و مقاله</button>
-    <button class="tab" onclick="switchPublishTab('book')">کتاب / فایل</button>
-  </div>
-
-  <!-- TEXT TAB -->
-  <div id="tab-text" class="tab-content active">
-    <div id="editor-section">
-      <div class="form-row">
-        <div class="form-group">
-          <label>عنوان نوشته</label>
-          <input type="text" id="post-title" placeholder="عنوان را بنویسید..." />
-        </div>
-        <div class="form-group">
-          <label>نوع محتوا</label>
-          <select id="post-type">
-            <option value="داستان">داستان</option>
-            <option value="شعر">شعر</option>
-            <option value="مقاله">مقاله</option>
-            <option value="رمان">رمان</option>
-            <option value="نقد">نقد ادبی</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group">
-        <label>متن نوشته</label>
-        <textarea id="post-body" placeholder="اینجا بنویسید..."></textarea>
-      </div>
-      <button class="btn btn-primary" id="publish-btn" onclick="publishPost()">انتشار نوشته</button>
-    </div>
-  </div>
-
-  <!-- BOOK TAB -->
-  <div id="tab-book" class="tab-content">
-    <div id="editor-section" style="margin-top:0">
-      <div class="form-row">
-        <div class="form-group">
-          <label>نام کتاب یا فایل</label>
-          <input type="text" id="book-title" placeholder="نام کتاب..." />
-        </div>
-        <div class="form-group">
-          <label>نویسنده</label>
-          <input type="text" id="book-author" placeholder="نام نویسنده..." />
-        </div>
-      </div>
-      <div class="form-group">
-        <label>توضیح کوتاه</label>
-        <input type="text" id="book-desc" placeholder="یک جمله درباره کتاب..." />
-      </div>
-      <div class="form-group">
-        <label>فایل کتاب (PDF، EPUB، ...)</label>
-        <div class="upload-box" onclick="document.getElementById('book-file').click()">
-          <div class="upload-icon">📂</div>
-          <div class="upload-text" id="upload-label">
-            کلیک کنید یا فایل را اینجا بکشید<br>
-            <small style="color:var(--mist)">PDF · EPUB · DOCX · TXT</small>
-          </div>
-          <input type="file" id="book-file" style="display:none"
-                 accept=".pdf,.epub,.docx,.txt,.mobi"
-                 onchange="fileSelected(this)" />
-        </div>
-      </div>
-      <button class="btn btn-primary" id="publish-btn" onclick="publishBook()">آپلود و انتشار کتاب</button>
-    </div>
-  </div>
+<!-- ABOUT -->
+<section class="section" id="about" style="text-align:center;max-width:600px">
+  <div class="eyebrow">درباره</div>
+  <h2 class="section-title" style="margin-bottom:1.5rem">نویسنده</h2>
+  <p style="color:var(--muted);line-height:2;font-size:1rem">این فضایی‌ست برای نوشتن — بی‌واسطه، صادقانه. داستان، شعر، مقاله و هر آنچه از ذهن به قلم می‌رسد.</p>
+  <a href="https://t.me/Spaincar70" target="_blank" style="display:inline-block;margin-top:2rem;color:var(--gold);text-decoration:none;font-size:.9rem">کانال تلگرام ←</a>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <p>ساخته‌شده با ❤️ | <a href="https://t.me/Spaincar70" target="_blank">کانال تلگرام</a></p>
+  <p>قلم · وبلاگ نویسندگی شخصی · <a href="https://t.me/Spaincar70" target="_blank">@Spaincar70</a></p>
 </footer>
 
-<!-- MODAL -->
+<!-- READ MODAL -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">✕</button>
-    <h2 id="modal-title"></h2>
-    <p id="modal-type" style="color:var(--gold);font-size:.8rem;margin-bottom:1rem;letter-spacing:.1em"></p>
-    <p id="modal-body"></p>
+    <div class="modal-tag" id="m-tag"></div>
+    <h2 class="modal-title" id="m-title"></h2>
+    <div class="modal-date" id="m-date"></div>
+    <img class="modal-img" id="m-img" src="" alt="" style="display:none"/>
+    <div class="modal-text" id="m-body"></div>
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-  // ── DATA ──
-  const POSTS_KEY = 'qalam_posts';
-  const BOOKS_KEY = 'qalam_books';
+const PK='qalam_posts', BK='qalam_books';
+const getPosts=()=>{try{return JSON.parse(localStorage.getItem(PK))||[]}catch{return[]}};
+const getBooks=()=>{try{return JSON.parse(localStorage.getItem(BK))||[]}catch{return[]}};
+const savePosts=d=>localStorage.setItem(PK,JSON.stringify(d));
+const saveBooks=d=>localStorage.setItem(BK,JSON.stringify(d));
 
-  function getPosts() {
-    try { return JSON.parse(localStorage.getItem(POSTS_KEY)) || []; }
-    catch { return []; }
+function initDemo(){
+  if(!getPosts().length){
+    savePosts([
+      {id:1,title:'باد که می‌وزد',type:'شعر',body:'باد که می‌وزد\nیادت می‌آید\nمثل بوی باران روی آسفالت گرم\nمثل نور آفتاب روی دیوار سفید\n\nهمیشه بودی\nهمیشه نبودی',img:'',date:'۱۴۰۳/۰۳/۲۵'},
+      {id:2,title:'آخرین قطار',type:'داستان',body:'پیرمرد روی نیمکت نشسته بود. قطار دیر کرده بود. مثل همیشه.\n\nاو اما عجله‌ای نداشت. سال‌ها پیش یاد گرفته بود که صبر، تنها چیزی‌ست که هرگز دیر نمی‌رسد.',img:'',date:'۱۴۰۳/۰۳/۱۸'}
+    ]);
   }
+}
 
-  function getBooks() {
-    try { return JSON.parse(localStorage.getItem(BOOKS_KEY)) || []; }
-    catch { return []; }
-  }
-
-  function savePosts(posts) { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); }
-  function saveBooks(books) { localStorage.setItem(BOOKS_KEY, JSON.stringify(books)); }
-
-  // ── SAMPLE DATA (اگه هیچ محتوایی نبود) ──
-  function initSampleData() {
-    if (getPosts().length === 0) {
-      savePosts([
-        {
-          id: 1,
-          title: "باد که می‌وزد",
-          type: "شعر",
-          body: "باد که می‌وزد\nیادت می‌آید\nمثل بوی باران روی آسفالت گرم\nمثل نور آفتاب روی دیوار سفید\nهمیشه بودی\nهمیشه نبودی",
-          date: "۱۴۰۳/۰۳/۲۵"
-        },
-        {
-          id: 2,
-          title: "آخرین قطار",
-          type: "داستان",
-          body: "پیرمرد روی نیمکت نشسته بود. قطار دیر کرده بود. مثل همیشه. او اما عجله‌ای نداشت. سال‌ها پیش یاد گرفته بود که صبر، تنها چیزی‌ست که هرگز دیر نمی‌رسد.",
-          date: "۱۴۰۳/۰۳/۱۸"
-        }
-      ]);
-    }
-  }
-
-  // ── RENDER POSTS ──
-  let activeFilter = 'all';
-
-  function renderPosts(filter) {
-    const grid = document.getElementById('posts-grid');
-    const posts = getPosts();
-    const filtered = filter === 'all' ? posts : posts.filter(p => p.type === filter);
-
-    if (filtered.length === 0) {
-      grid.innerHTML = `<p style="color:var(--mist);grid-column:1/-1;text-align:center;padding:3rem">هنوز نوشته‌ای منتشر نشده.</p>`;
-      return;
-    }
-
-    grid.innerHTML = filtered.map(p => `
-      <div class="post-card" onclick="openPost(${p.id})">
-        <div class="post-type">${p.type}</div>
-        <div class="post-title">${p.title}</div>
-        <div class="post-excerpt">${p.body.slice(0,120)}${p.body.length>120?'...':''}</div>
-        <div class="post-meta">
-          <span>${p.date}</span>
-          <span>خواندن ←</span>
-        </div>
+let activeFilter='all';
+function renderPosts(filter){
+  const grid=document.getElementById('posts-grid');
+  const all=getPosts();
+  const list=filter==='all'?all:all.filter(p=>p.type===filter);
+  if(!list.length){grid.innerHTML='<div class="empty">هنوز نوشته‌ای در این دسته وجود ندارد.</div>';return}
+  grid.innerHTML=list.map(p=>`
+    <div class="post-card" onclick="openPost(${p.id})">
+      ${p.img?`<img class="post-img" src="${p.img}" alt="${p.title}"/>`:`<div class="post-img-placeholder">✍️</div>`}
+      <div class="post-body-card">
+        <div class="post-tag">${p.type}</div>
+        <div class="post-title-card">${p.title}</div>
+        <div class="post-excerpt">${p.body}</div>
       </div>
-    `).join('');
-  }
+      <div class="post-footer"><span>${p.date}</span><span>خواندن ←</span></div>
+    </div>`).join('');
+}
 
-  function filterPosts(type) {
-    activeFilter = type;
-    document.querySelectorAll('.tabs .tab').forEach((t,i) => {
-      t.classList.toggle('active', ['all','داستان','شعر','مقاله'][i] === type);
-    });
-    renderPosts(type);
-  }
+function filterPosts(f,el){
+  activeFilter=f;
+  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderPosts(f);
+}
 
-  // ── RENDER BOOKS ──
-  function renderBooks() {
-    const grid = document.getElementById('books-grid');
-    const books = getBooks();
-
-    if (books.length === 0) {
-      grid.innerHTML = `<p style="color:var(--mist);grid-column:1/-1;text-align:center;padding:3rem">هنوز کتابی آپلود نشده.</p>`;
-      return;
-    }
-
-    grid.innerHTML = books.map(b => `
-      <div class="book-card">
-        <div class="book-cover">📖</div>
-        <div class="book-info">
-          <div class="book-title">${b.title}</div>
-          <div class="book-author">${b.author}</div>
-          ${b.url ? `<a class="book-download" href="${b.url}" download="${b.title}">دانلود</a>` : '<span style="font-size:.75rem;color:var(--mist);display:block;margin-top:.5rem">فایل موجود نیست</span>'}
-        </div>
+function renderBooks(){
+  const grid=document.getElementById('books-grid');
+  const list=getBooks();
+  if(!list.length){grid.innerHTML='<div class="empty">هنوز کتابی اضافه نشده.</div>';return}
+  grid.innerHTML=list.map(b=>`
+    <div class="book-card">
+      <div class="book-cover">📖</div>
+      <div class="book-info">
+        <div class="book-name">${b.title}</div>
+        <div class="book-by">${b.author}</div>
+        ${b.url?`<a class="book-dl" href="${b.url}" download="${b.title}">دانلود</a>`:'<div style="height:.5rem"></div>'}
       </div>
-    `).join('');
-  }
+    </div>`).join('');
+}
 
-  // ── PUBLISH POST ──
-  function publishPost() {
-    const title = document.getElementById('post-title').value.trim();
-    const body  = document.getElementById('post-body').value.trim();
-    const type  = document.getElementById('post-type').value;
+function openPost(id){
+  const p=getPosts().find(x=>x.id===id);if(!p)return;
+  document.getElementById('m-tag').textContent=p.type;
+  document.getElementById('m-title').textContent=p.title;
+  document.getElementById('m-date').textContent=p.date;
+  document.getElementById('m-body').textContent=p.body;
+  const img=document.getElementById('m-img');
+  if(p.img){img.src=p.img;img.style.display='block'}else{img.style.display='none'}
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal()});
 
-    if (!title || !body) { showToast('عنوان و متن را پر کنید'); return; }
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}
 
-    const posts = getPosts();
-    posts.unshift({
-      id: Date.now(),
-      title, type, body,
-      date: new Date().toLocaleDateString('fa-IR')
-    });
-    savePosts(posts);
-
-    document.getElementById('post-title').value = '';
-    document.getElementById('post-body').value  = '';
-    renderPosts(activeFilter);
-    showToast('✅ نوشته با موفقیت منتشر شد!');
-    document.getElementById('posts').scrollIntoView({ behavior: 'smooth' });
-  }
-
-  // ── PUBLISH BOOK ──
-  function fileSelected(input) {
-    if (input.files[0]) {
-      document.getElementById('upload-label').innerHTML =
-        `✅ ${input.files[0].name}<br><small style="color:var(--mist)">${(input.files[0].size/1024/1024).toFixed(2)} MB</small>`;
-    }
-  }
-
-  function publishBook() {
-    const title  = document.getElementById('book-title').value.trim();
-    const author = document.getElementById('book-author').value.trim();
-    const desc   = document.getElementById('book-desc').value.trim();
-    const file   = document.getElementById('book-file').files[0];
-
-    if (!title || !author) { showToast('نام کتاب و نویسنده را پر کنید'); return; }
-
-    const books = getBooks();
-
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = e => {
-        books.unshift({ id: Date.now(), title, author, desc, url: e.target.result });
-        saveBooks(books);
-        renderBooks();
-        showToast('✅ کتاب با موفقیت آپلود شد!');
-        resetBookForm();
-      };
-      reader.readAsDataURL(file);
-    } else {
-      books.unshift({ id: Date.now(), title, author, desc, url: null });
-      saveBooks(books);
-      renderBooks();
-      showToast('✅ کتاب اضافه شد (بدون فایل)');
-      resetBookForm();
-    }
-  }
-
-  function resetBookForm() {
-    document.getElementById('book-title').value  = '';
-    document.getElementById('book-author').value = '';
-    document.getElementById('book-desc').value   = '';
-    document.getElementById('book-file').value   = '';
-    document.getElementById('upload-label').innerHTML =
-      'کلیک کنید یا فایل را اینجا بکشید<br><small style="color:var(--mist)">PDF · EPUB · DOCX · TXT</small>';
-    document.getElementById('books').scrollIntoView({ behavior: 'smooth' });
-  }
-
-  // ── MODAL ──
-  function openPost(id) {
-    const post = getPosts().find(p => p.id === id);
-    if (!post) return;
-    document.getElementById('modal-title').textContent = post.title;
-    document.getElementById('modal-type').textContent  = post.type + ' · ' + post.date;
-    document.getElementById('modal-body').innerHTML    = post.body.replace(/\n/g, '<br>');
-    document.getElementById('modal').classList.add('open');
-  }
-
-  function closeModal() {
-    document.getElementById('modal').classList.remove('open');
-  }
-
-  document.getElementById('modal').addEventListener('click', e => {
-    if (e.target === document.getElementById('modal')) closeModal();
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const el=document.querySelector(a.getAttribute('href'));
+    if(el)el.scrollIntoView({behavior:'smooth'});
   });
+});
 
-  // ── TABS (publish) ──
-  function switchPublishTab(tab) {
-    document.getElementById('tab-text').classList.toggle('active', tab === 'text');
-    document.getElementById('tab-book').classList.toggle('active', tab === 'book');
-    document.querySelectorAll('#publish .tabs .tab').forEach((t, i) => {
-      t.classList.toggle('active', ['text','book'][i] === tab);
-    });
-  }
-
-  // ── TOAST ──
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
-  }
-
-  // ── SMOOTH SCROLL ──
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      const el = document.querySelector(a.getAttribute('href'));
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  });
-
-  // ── INIT ──
-  initSampleData();
-  renderPosts('all');
-  renderBooks();
+initDemo();renderPosts('all');renderBooks();
 </script>
 </body>
 </html>
