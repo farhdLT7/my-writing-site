@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>قلم — فضای نویسندگی</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink:     #1a1208;
+      --paper:   #f7f3ec;
+      --gold:    #b5892a;
+      --mist:    #d6cfc3;
+      --shadow:  #3d2f1a;
+      --accent:  #6b3f1e;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 40%, rgba(181,137,42,.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-title {
+      font-size: clamp(3.5rem, 12vw, 9rem);
+      font-weight: 700;
+      letter-spacing: -.02em;
+      line-height: 1;
+      color: var(--ink);
+      position: relative;
+    }
+
+    .hero-title span {
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      margin-top: 1.5rem;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      font-weight: 300;
+      color: var(--accent);
+      max-width: 500px;
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      margin-top: 3rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: .9rem 2.2rem;
+      border-radius: 3px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: var(--ink);
+      color: var(--paper);
+      border: 2px solid var(--ink);
+    }
+    .btn-primary:hover { background: var(--shadow); border-color: var(--shadow); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      border: 2px solid var(--mist);
+    }
+    .btn-outline:hover { border-color: var(--ink); }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: .8rem;
+      color: var(--mist);
+      letter-spacing: .1em;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; right: 0; left: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      backdrop-filter: blur(12px);
+      background: rgba(247,243,236,.85);
+      border-bottom: 1px solid var(--mist);
+    }
+
+    .nav-logo {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--ink);
+      font-size: .95rem;
+      font-weight: 400;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 3rem;
+      color: var(--ink);
+    }
+
+    /* ── POSTS GRID ── */
+    .posts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .post-card {
+      border: 1px solid var(--mist);
+      padding: 2rem;
+      border-radius: 4px;
+      transition: all .25s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      background: white;
+    }
+    .post-card:hover {
+      border-color: var(--gold);
+      box-shadow: 0 8px 32px rgba(26,18,8,.08);
+      transform: translateY(-3px);
+    }
+
+    .post-type {
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: .8rem;
+    }
+
+    .post-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: .8rem;
+    }
+
+    .post-excerpt {
+      font-size: .9rem;
+      line-height: 1.7;
+      color: var(--accent);
+    }
+
+    .post-meta {
+      margin-top: 1.5rem;
+      font-size: .8rem;
+      color: var(--mist);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* ── UPLOAD SECTION ── */
+    .upload-box {
+      border: 2px dashed var(--mist);
+      border-radius: 6px;
+      padding: 3rem;
+      text-align: center;
+      transition: border-color .2s;
+      cursor: pointer;
+      background: white;
+    }
+    .upload-box:hover { border-color: var(--gold); }
+    .upload-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .upload-text { color: var(--accent); line-height: 1.8; }
+
+    /* ── EDITOR ── */
+    #editor-section {
+      background: white;
+      border: 1px solid var(--mist);
+      border-radius: 6px;
+      padding: 2.5rem;
+      margin-top: 2rem;
+    }
+
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label {
+      display: block;
+      font-size: .85rem;
+      font-weight: 500;
+      margin-bottom: .5rem;
+      color: var(--shadow);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: .9rem 1.1rem;
+      border: 1.5px solid var(--mist);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--ink);
+      background: var(--paper);
+      transition: border-color .2s;
+      direction: rtl;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    .form-group textarea { min-height: 250px; resize: vertical; line-height: 1.8; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media(max-width:600px){ .form-row { grid-template-columns: 1fr; } }
+
+    /* ── BOOKS ── */
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .book-card {
+      background: white;
+      border: 1px solid var(--mist);
+      border-radius: 4px;
+      overflow: hidden;
+      text-align: center;
+      transition: all .25s;
+    }
+    .book-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(26,18,8,.1); }
+
+    .book-cover {
+      height: 220px;
+      background: linear-gradient(135deg, var(--shadow), var(--gold));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
+    .book-info { padding: 1rem; }
+    .book-title { font-size: .95rem; font-weight: 700; margin-bottom: .4rem; }
+    .book-author { font-size: .8rem; color: var(--accent); }
+    .book-download {
+      display: block;
+      margin: .8rem .5rem .5rem;
+      padding: .5rem;
+      background: var(--ink);
+      color: white;
+      border-radius: 3px;
+      text-decoration: none;
+      font-size: .8rem;
+      transition: background .2s;
+    }
+    .book-download:hover { background: var(--gold); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--mist);
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--mist);
+      font-size: .85rem;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(26,18,8,.7);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--paper);
+      border-radius: 6px;
+      padding: 2.5rem;
+      max-width: 600px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--accent);
+    }
+
+    .modal h2 { margin-bottom: 1rem; font-size: 1.5rem; }
+    .modal p { line-height: 1.9; color: var(--shadow); font-size: 1rem; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--ink);
+      color: white;
+      padding: .9rem 2rem;
+      border-radius: 4px;
+      font-size: .9rem;
+      z-index: 300;
+      transition: transform .3s ease;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ── TABS ── */
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--mist);
+      margin-bottom: 2rem;
+    }
+
+    .tab {
+      padding: .8rem 1.5rem;
+      cursor: pointer;
+      font-size: .95rem;
+      font-weight: 500;
+      color: var(--accent);
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: all .2s;
+      background: none;
+      border-top: none;
+      border-right: none;
+      border-left: none;
+      font-family: inherit;
+    }
+    .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+    .tab:hover { color: var(--ink); }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    #publish-btn {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.1rem;
+      margin-top: .5rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#"><span>ق</span>لم</a>
+  <ul class="nav-links">
+    <li><a href="#posts">نوشته‌ها</a></li>
+    <li><a href="#books">کتاب‌ها</a></li>
+    <li><a href="#publish">انتشار</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <h1 class="hero-title">قلم<span>.</span></h1>
+  <p class="hero-sub">فضای نویسندگی شما — داستان، شعر، مقاله و کتاب را اینجا منتشر کنید</p>
+  <div class="hero-actions">
+    <a href="#publish" class="btn btn-primary">شروع نوشتن</a>
+    <a href="#posts" class="btn btn-outline">خواندن نوشته‌ها</a>
+  </div>
+  <div class="scroll-hint">↓ اسکرول کن</div>
+</div>
+
+<!-- POSTS -->
+<section id="posts">
+  <div class="section-label">آخرین نوشته‌ها</div>
+  <h2 class="section-title">نوشته‌های منتشرشده</h2>
+
+  <div class="tabs">
+    <button class="tab active" onclick="filterPosts('all')">همه</button>
+    <button class="tab" onclick="filterPosts('داستان')">داستان</button>
+    <button class="tab" onclick="filterPosts('شعر')">شعر</button>
+    <button class="tab" onclick="filterPosts('مقاله')">مقاله</button>
+  </div>
+
+  <div class="posts-grid" id="posts-grid">
+    <!-- از localStorage لود می‌شه -->
+  </div>
+</section>
+
+<!-- BOOKS -->
+<section id="books">
+  <div class="section-label">کتابخانه</div>
+  <h2 class="section-title">کتاب‌ها و فایل‌ها</h2>
+  <div class="books-grid" id="books-grid"></div>
+</section>
+
+<!-- PUBLISH -->
+<section id="publish">
+  <div class="section-label">انتشار</div>
+  <h2 class="section-title">انتشار محتوا</h2>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchPublishTab('text')">متن و مقاله</button>
+    <button class="tab" onclick="switchPublishTab('book')">کتاب / فایل</button>
+  </div>
+
+  <!-- TEXT TAB -->
+  <div id="tab-text" class="tab-content active">
+    <div id="editor-section">
+      <div class="form-row">
+        <div class="form-group">
+          <label>عنوان نوشته</label>
+          <input type="text" id="post-title" placeholder="عنوان را بنویسید..." />
+        </div>
+        <div class="form-group">
+          <label>نوع محتوا</label>
+          <select id="post-type">
+            <option value="داستان">داستان</option>
+            <option value="شعر">شعر</option>
+            <option value="مقاله">مقاله</option>
+            <option value="رمان">رمان</option>
+            <option value="نقد">نقد ادبی</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>متن نوشته</label>
+        <textarea id="post-body" placeholder="اینجا بنویسید..."></textarea>
+      </div>
+      <button class="btn btn-primary" id="publish-btn" onclick="publishPost()">انتشار نوشته</button>
+    </div>
+  </div>
+
+  <!-- BOOK TAB -->
+  <div id="tab-book" class="tab-content">
+    <div id="editor-section" style="margin-top:0">
+      <div class="form-row">
+        <div class="form-group">
+          <label>نام کتاب یا فایل</label>
+          <input type="text" id="book-title" placeholder="نام کتاب..." />
+        </div>
+        <div class="form-group">
+          <label>نویسنده</label>
+          <input type="text" id="book-author" placeholder="نام نویسنده..." />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>توضیح کوتاه</label>
+        <input type="text" id="book-desc" placeholder="یک جمله درباره کتاب..." />
+      </div>
+      <div class="form-group">
+        <label>فایل کتاب (PDF، EPUB، ...)</label>
+        <div class="upload-box" onclick="document.getElementById('book-file').click()">
+          <div class="upload-icon">📂</div>
+          <div class="upload-text" id="upload-label">
+            کلیک کنید یا فایل را اینجا بکشید<br>
+            <small style="color:var(--mist)">PDF · EPUB · DOCX · TXT</small>
+          </div>
+          <input type="file" id="book-file" style="display:none"
+                 accept=".pdf,.epub,.docx,.txt,.mobi"
+                 onchange="fileSelected(this)" />
+        </div>
+      </div>
+      <button class="btn btn-primary" id="publish-btn" onclick="publishBook()">آپلود و انتشار کتاب</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>ساخته‌شده با ❤️ | <a href="https://t.me/Spaincar70" target="_blank">کانال تلگرام</a></p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h2 id="modal-title"></h2>
+    <p id="modal-type" style="color:var(--gold);font-size:.8rem;margin-bottom:1rem;letter-spacing:.1em"></p>
+    <p id="modal-body"></p>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── DATA ──
+  const POSTS_KEY = 'qalam_posts';
+  const BOOKS_KEY = 'qalam_books';
+
+  function getPosts() {
+    try { return JSON.parse(localStorage.getItem(POSTS_KEY)) || []; }
+    catch { return []; }
+  }
+
+  function getBooks() {
+    try { return JSON.parse(localStorage.getItem(BOOKS_KEY)) || []; }
+    catch { return []; }
+  }
+
+  function savePosts(posts) { localStorage.setItem(POSTS_KEY, JSON.stringify(posts)); }
+  function saveBooks(books) { localStorage.setItem(BOOKS_KEY, JSON.stringify(books)); }
+
+  // ── SAMPLE DATA (اگه هیچ محتوایی نبود) ──
+  function initSampleData() {
+    if (getPosts().length === 0) {
+      savePosts([
+        {
+          id: 1,
+          title: "باد که می‌وزد",
+          type: "شعر",
+          body: "باد که می‌وزد\nیادت می‌آید\nمثل بوی باران روی آسفالت گرم\nمثل نور آفتاب روی دیوار سفید\nهمیشه بودی\nهمیشه نبودی",
+          date: "۱۴۰۳/۰۳/۲۵"
+        },
+        {
+          id: 2,
+          title: "آخرین قطار",
+          type: "داستان",
+          body: "پیرمرد روی نیمکت نشسته بود. قطار دیر کرده بود. مثل همیشه. او اما عجله‌ای نداشت. سال‌ها پیش یاد گرفته بود که صبر، تنها چیزی‌ست که هرگز دیر نمی‌رسد.",
+          date: "۱۴۰۳/۰۳/۱۸"
+        }
+      ]);
+    }
+  }
+
+  // ── RENDER POSTS ──
+  let activeFilter = 'all';
+
+  function renderPosts(filter) {
+    const grid = document.getElementById('posts-grid');
+    const posts = getPosts();
+    const filtered = filter === 'all' ? posts : posts.filter(p => p.type === filter);
+
+    if (filtered.length === 0) {
+      grid.innerHTML = `<p style="color:var(--mist);grid-column:1/-1;text-align:center;padding:3rem">هنوز نوشته‌ای منتشر نشده.</p>`;
+      return;
+    }
+
+    grid.innerHTML = filtered.map(p => `
+      <div class="post-card" onclick="openPost(${p.id})">
+        <div class="post-type">${p.type}</div>
+        <div class="post-title">${p.title}</div>
+        <div class="post-excerpt">${p.body.slice(0,120)}${p.body.length>120?'...':''}</div>
+        <div class="post-meta">
+          <span>${p.date}</span>
+          <span>خواندن ←</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function filterPosts(type) {
+    activeFilter = type;
+    document.querySelectorAll('.tabs .tab').forEach((t,i) => {
+      t.classList.toggle('active', ['all','داستان','شعر','مقاله'][i] === type);
+    });
+    renderPosts(type);
+  }
+
+  // ── RENDER BOOKS ──
+  function renderBooks() {
+    const grid = document.getElementById('books-grid');
+    const books = getBooks();
+
+    if (books.length === 0) {
+      grid.innerHTML = `<p style="color:var(--mist);grid-column:1/-1;text-align:center;padding:3rem">هنوز کتابی آپلود نشده.</p>`;
+      return;
+    }
+
+    grid.innerHTML = books.map(b => `
+      <div class="book-card">
+        <div class="book-cover">📖</div>
+        <div class="book-info">
+          <div class="book-title">${b.title}</div>
+          <div class="book-author">${b.author}</div>
+          ${b.url ? `<a class="book-download" href="${b.url}" download="${b.title}">دانلود</a>` : '<span style="font-size:.75rem;color:var(--mist);display:block;margin-top:.5rem">فایل موجود نیست</span>'}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ── PUBLISH POST ──
+  function publishPost() {
+    const title = document.getElementById('post-title').value.trim();
+    const body  = document.getElementById('post-body').value.trim();
+    const type  = document.getElementById('post-type').value;
+
+    if (!title || !body) { showToast('عنوان و متن را پر کنید'); return; }
+
+    const posts = getPosts();
+    posts.unshift({
+      id: Date.now(),
+      title, type, body,
+      date: new Date().toLocaleDateString('fa-IR')
+    });
+    savePosts(posts);
+
+    document.getElementById('post-title').value = '';
+    document.getElementById('post-body').value  = '';
+    renderPosts(activeFilter);
+    showToast('✅ نوشته با موفقیت منتشر شد!');
+    document.getElementById('posts').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ── PUBLISH BOOK ──
+  function fileSelected(input) {
+    if (input.files[0]) {
+      document.getElementById('upload-label').innerHTML =
+        `✅ ${input.files[0].name}<br><small style="color:var(--mist)">${(input.files[0].size/1024/1024).toFixed(2)} MB</small>`;
+    }
+  }
+
+  function publishBook() {
+    const title  = document.getElementById('book-title').value.trim();
+    const author = document.getElementById('book-author').value.trim();
+    const desc   = document.getElementById('book-desc').value.trim();
+    const file   = document.getElementById('book-file').files[0];
+
+    if (!title || !author) { showToast('نام کتاب و نویسنده را پر کنید'); return; }
+
+    const books = getBooks();
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        books.unshift({ id: Date.now(), title, author, desc, url: e.target.result });
+        saveBooks(books);
+        renderBooks();
+        showToast('✅ کتاب با موفقیت آپلود شد!');
+        resetBookForm();
+      };
+      reader.readAsDataURL(file);
+    } else {
+      books.unshift({ id: Date.now(), title, author, desc, url: null });
+      saveBooks(books);
+      renderBooks();
+      showToast('✅ کتاب اضافه شد (بدون فایل)');
+      resetBookForm();
+    }
+  }
+
+  function resetBookForm() {
+    document.getElementById('book-title').value  = '';
+    document.getElementById('book-author').value = '';
+    document.getElementById('book-desc').value   = '';
+    document.getElementById('book-file').value   = '';
+    document.getElementById('upload-label').innerHTML =
+      'کلیک کنید یا فایل را اینجا بکشید<br><small style="color:var(--mist)">PDF · EPUB · DOCX · TXT</small>';
+    document.getElementById('books').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ── MODAL ──
+  function openPost(id) {
+    const post = getPosts().find(p => p.id === id);
+    if (!post) return;
+    document.getElementById('modal-title').textContent = post.title;
+    document.getElementById('modal-type').textContent  = post.type + ' · ' + post.date;
+    document.getElementById('modal-body').innerHTML    = post.body.replace(/\n/g, '<br>');
+    document.getElementById('modal').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+  }
+
+  document.getElementById('modal').addEventListener('click', e => {
+    if (e.target === document.getElementById('modal')) closeModal();
+  });
+
+  // ── TABS (publish) ──
+  function switchPublishTab(tab) {
+    document.getElementById('tab-text').classList.toggle('active', tab === 'text');
+    document.getElementById('tab-book').classList.toggle('active', tab === 'book');
+    document.querySelectorAll('#publish .tabs .tab').forEach((t, i) => {
+      t.classList.toggle('active', ['text','book'][i] === tab);
+    });
+  }
+
+  // ── TOAST ──
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // ── SMOOTH SCROLL ──
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const el = document.querySelector(a.getAttribute('href'));
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // ── INIT ──
+  initSampleData();
+  renderPosts('all');
+  renderBooks();
+</script>
+</body>
+</html>
